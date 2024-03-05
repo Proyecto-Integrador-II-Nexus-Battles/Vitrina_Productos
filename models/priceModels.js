@@ -10,8 +10,12 @@ const pool = mariadb.createPool({
 
 export class Prices {
     static async getPrices() {
-        const rows = await pool.query('SELECT ID, precio FROM cartas')
-        console.log(rows)
-        return rows
+        const rows = await pool.query('SELECT ID, precio FROM cartas');
+        const precios = rows.reduce((acc, row) => {
+            acc[row.ID] = row.precio;
+            return acc;
+        }, {});
+        console.log(precios);
+        return precios;
     }
 }
