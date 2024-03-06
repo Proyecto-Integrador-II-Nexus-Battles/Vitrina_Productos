@@ -5,5 +5,4 @@ export class PriceController {
     const prices = await Prices.getPrices()
     res.json(prices)
   }
-
 }
