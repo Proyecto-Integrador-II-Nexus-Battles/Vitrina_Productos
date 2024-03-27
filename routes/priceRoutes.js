@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { PriceController } from '../controllers/priceController.js'
+import { PriceController, filterController } from '../controllers/priceController.js'
 
 export const priceRouter = Router()
 
