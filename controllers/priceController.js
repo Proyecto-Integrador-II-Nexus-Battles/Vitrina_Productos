@@ -23,3 +23,15 @@ export class filterController {
     res.json(filter)
   }
 }
+
+export class userInfoController {
+  static async recibir(req, res) {
+    //recibe  el header de autenticacion
+    const Authorization = req.headers['authorization'];
+    console.log('Authorization', Authorization);
+    const decodedToken = jwt.decode(Authorization, { complete: true });
+    const payload = decodedToken.payload;
+    console.log('Payload:', payload);
+    res.json(payload)
+  }
+}
