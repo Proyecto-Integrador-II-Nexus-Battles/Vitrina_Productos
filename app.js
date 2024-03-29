@@ -10,13 +10,11 @@ app.disable('x-powered-by') // --> Deshabilitar el header x-powered-by
 app.use(cors())
 app.use('/vitrina', priceRouter)
 
-const PORT = process.env.PORT || 3000 // --> Usar la variable de entorno PORT, si no usar el port 3000
-
-app.listen(PORT, () => {
-  console.log(`Server listen on port http://localhost:${PORT}`)
+app.listen(process.env.PORT, () => {
+  console.log(`Server listen on port http://${process.env.HOST}:${process.env.PORT}`)
 })
 
-const updateInterval = 5 * 60 * 1000;
+const updateInterval = process.env.MINS_INTERVAL * 60 * 1000;
 setInterval(async () => {
   try {
     await actualizarBD.insertCards();

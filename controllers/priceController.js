@@ -1,4 +1,4 @@
-import { Prices, Filter } from '../models/priceModels.js' // -> MARIADB
+import { Prices } from '../models/priceModels.js' // -> MARIADB
 
 export class PriceController {
   static async getPrices (req, res) {
@@ -7,7 +7,11 @@ export class PriceController {
   }
 
   static async getPrice (req, res) {
-    const price = await Prices.getPrice(req.body)
+    const cards = req.body
+    if (!Symbol.iterator in Object(cards)) {
+      cards = [cards];
+    }
+    const price = await Prices.getPrice(cards)
     res.json(price)
   }
 }

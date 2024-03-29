@@ -1,11 +1,11 @@
 import mariadb from "mariadb";
 
 const pool = mariadb.createPool({
-  host: "localhost",
-  port: "3399",
-  user: "root",
-  password: "Mncdm2024.",
-  database: "ecommerce",
+  host: process.env.DBHOST,
+  port: process.env.DBPORT,
+  user: process.env.DBUSER,
+  password: process.env.DBPASSWORD,
+  database: process.env.DBDATABASE,
 });
 
 export class actualizarBD {
@@ -17,7 +17,7 @@ export class actualizarBD {
   }
   
   static async obtenerCartas() {
-    const res = await fetch('http://localhost:1234/inventario/getAllCards')
+    const res = await fetch(`http://${process.env.I_HOST}:${process.env.I_PORT}/inventario/getAllCards`)
     const cartas = res.json()
     return cartas
   }
@@ -52,9 +52,9 @@ export class Prices {
     return precios;
   }
 
-  static async getPrice(id) {
+  static async getPrice(ids) {
     let precios = [];
-    for (const cardId of id) {
+    for (const cardId of ids) {
       const precio = await pool.query("SELECT precio, divisa_nombre, porcentaje_descuento FROM cartas WHERE ID = ?", [cardId]);
       precios.push({ precio: precio[0].precio, divisa: precio[0].divisa_nombre, descuento: precio[0].porcentaje_descuento, id_carta: cardId});
     }
