@@ -1,4 +1,5 @@
 import { Prices } from '../models/priceModels.js' // -> MARIADB
+import jwt from 'jsonwebtoken';
 
 export class PriceController {
   static async getPrices (req, res) {
@@ -27,7 +28,7 @@ export class filterController {
 export class userInfoController {
   static async recibir(req, res) {
     //recibe  el header de autenticacion
-    const Authorization = req.headers['authorization'];
+    const Authorization = req.headers['authorization'].toString();
     console.log('Authorization', Authorization);
     const decodedToken = jwt.decode(Authorization, { complete: true });
     const payload = decodedToken.payload;
