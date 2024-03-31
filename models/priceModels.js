@@ -1,11 +1,13 @@
 import mariadb from "mariadb";
+import { DBDATABASE, DBHOST, DBPASSWORD, DBPORT, DBUSER, PORT, HOST } from "../config.js";
 
 const pool = mariadb.createPool({
-  host: process.env.DBHOST,
-  port: process.env.DBPORT,
-  user: process.env.DBUSER,
-  password: process.env.DBPASSWORD,
-  database: process.env.DBDATABASE,
+  host: DBHOST,
+  port: DBPORT,
+  user: DBUSER,
+  password: DBPASSWORD,
+  database: DBDATABASE,
+  
 });
 
 export class actualizarBD {
@@ -17,15 +19,16 @@ export class actualizarBD {
   }
   
   static async obtenerCartas() {
-    const res = await fetch(`http://${process.env.I_HOST}:${process.env.I_PORT}/inventario/getAllCards`)
+    const res = await fetch(`${HOST}:${PORT}/inventario/getAllCards`)
     const cartas = res.json()
     return cartas
   }
   
   static async insertCards() {
     const conn = await pool.getConnection();
+    console.log(conn)
     const cards = await this.obtenerCartas();
-  
+    
     for (const card of cards) {
       const precio = this.obtenerNumeroAleatorio();
       const existingCard = await conn.query("SELECT id FROM cartas WHERE id = ?", [card._id]);
