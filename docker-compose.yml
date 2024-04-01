@@ -1,0 +1,16 @@
+services:
+  vitrina:
+    image: lexabernal/vitrina-productos:latest
+    ports:
+      - '4000:3000'
+    environment:
+      - PORT=5000
+      - HOST=https://gateway.thenexusbattlesii.online 
+      - MINS_INTERVAL=5
+      - DBHOST=buey.thenexusbattlesii.online
+      - DBPORT=3311
+      - DBUSER=root
+      - DBPASSWORD=my-password
+      - DBDATABASE=ecommerce
+      - APP_PORT=3000
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
