@@ -8,11 +8,11 @@ export class PriceController {
   }
 
   static async getPrice (req, res) {
-    const cards = req.body
-    if (!Symbol.iterator in Object(cards)) {
-      cards = [cards];
-    }
-    const price = await Prices.getPrice(cards)
+    const { cartas } = req.body
+    // if (!Symbol.iterator in Object(cards)) {
+    //   cards = [cards];
+    // }
+    const price = await Prices.getPrice(cartas)
     res.json(price)
   }
 }

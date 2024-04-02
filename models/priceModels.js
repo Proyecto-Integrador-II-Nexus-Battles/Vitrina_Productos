@@ -2,9 +2,9 @@ import mariadb from "mariadb";
 
 const pool = mariadb.createPool({
   host: process.env.DBHOST,
-  port: process.env.DBPORT,
+  port: "3307",
   user: process.env.DBUSER,
-  password: process.env.DBPASSWORD,
+  password: "1234",
   database: process.env.DBDATABASE,
 });
 
@@ -17,7 +17,7 @@ export class actualizarBD {
   }
   
   static async obtenerCartas() {
-    const res = await fetch(`http://${process.env.I_HOST}:${process.env.I_PORT}/inventario/getAllCards`)
+    const res = await fetch(`https://localhost:3000/inventario/getAllCards`)
     const cartas = res.json()
     return cartas
   }
