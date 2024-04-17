@@ -68,6 +68,7 @@ export class Prices {
 export class Comment {
 
   static async ADD_COMMENT(idUsuario, idCard, comment ){
-
+    const rows = await pool.query("INSERT INTO comentarios (id_usuario, id_carta, comentario) VALUES (?,?,?)", [idUsuario, idCard, comment]);
+    return rows;
   }
 }
