@@ -36,3 +36,15 @@ export class userInfoController {
     res.json(payload)
   }
 }
+
+export class comentarios{
+
+  static async guardarComentarios(req,res){
+    const {idUsuario, idCard, comment } = req.body
+    const result = await Comment.ADD_COMMENT(idUsuario, idCard, comment)
+    res.Json('se agregó correctamente')
+  }
+
+  //hacer la funcion de regreso de comentario por id
+
+}

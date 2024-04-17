@@ -64,3 +64,10 @@ export class Prices {
     return precios;
   }
 }
+
+export class Comment {
+
+  static async ADD_COMMENT(idUsuario, idCard, comment ){
+
+  }
+}
