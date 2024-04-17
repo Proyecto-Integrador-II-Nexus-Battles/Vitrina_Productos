@@ -47,4 +47,8 @@ export class comentarios{
 
   //hacer la funcion de regreso de comentario por id
 
+  static async ComentarioPorId(idCard){
+    const result = await Comment.COMMENT_BY_ID(idCard)
+    return result
+  }
 }
