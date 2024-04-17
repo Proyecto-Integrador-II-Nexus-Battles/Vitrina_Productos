@@ -71,3 +71,13 @@ export class Comment {
 
   }
 }
+export const DefaultR = async (req, res) =>{
+  try{
+    const response = await fetch(`${HOST}:${PORT}/inventario/getEcommerceCard`);
+    const datos = await response.json();
+    res.render("vitrina_productos/index", {datos});
+  }catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
+  }
+} 
