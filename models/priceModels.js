@@ -7,7 +7,7 @@ const pool = mariadb.createPool({
   user: DBUSER,
   password: DBPASSWORD,
   database: DBDATABASE,
-  
+
 });
 
 export class actualizarBD {
@@ -17,18 +17,18 @@ export class actualizarBD {
     const numeroFinal = numeroAleatorioEscalado + 20000;
     return Math.floor(numeroFinal);
   }
-  
+
   static async obtenerCartas() {
     const res = await fetch(`${HOST}:${PORT}/inventario/getAllCards`)
     const cartas = res.json()
     return cartas
   }
-  
+
   static async insertCards() {
     const conn = await pool.getConnection();
     console.log(conn)
     const cards = await this.obtenerCartas();
-    
+
     for (const card of cards) {
       const precio = this.obtenerNumeroAleatorio();
       const existingCard = await conn.query("SELECT id FROM cartas WHERE id = ?", [card._id]);
@@ -59,7 +59,7 @@ export class Prices {
     let precios = [];
     for (const cardId of ids) {
       const precio = await pool.query("SELECT precio, divisa_nombre, porcentaje_descuento FROM cartas WHERE ID = ?", [cardId]);
-      precios.push({ precio: precio[0].precio, divisa: precio[0].divisa_nombre, descuento: precio[0].porcentaje_descuento, id_carta: cardId});
+      precios.push({ precio: precio[0].precio, divisa: precio[0].divisa_nombre, descuento: precio[0].porcentaje_descuento, id_carta: cardId });
     }
     return precios;
   }
@@ -67,18 +67,26 @@ export class Prices {
 
 export class Comment {
 
-  static async ADD_COMMENT(idUsuario, idCard, comment ){
-    const rows = await pool.query("INSERT INTO comentarios (ID_USUARIO, DESCRIPCION, FECHA, CARTAS_ID) VALUES (?,?, NOW(), ?)", [Number(idUsuario),comment, idCard]);
-    return rows;
+  static async ADD_COMMENT(idUsuario, idCard, comment) {
+    try {
+      const rows = await pool.query("INSERT INTO COMENTARIOS (ID_USUARIO, DESCRIPCION, FECHA, CARTAS_ID) VALUES (?,?, NOW(), ?)", [Number(idUsuario), comment, idCard]);
+      return rows;
+    } catch (error) {
+      console.error('Error al insertar el comentario en la base de datos:', error);
+      throw error;
+    }
   }
+
+  static async VIEW_COMMENT(idCard){
+    try {
+      const rows = await pool.query('SELECT * FROM COMENTARIOS WHERE CARTAS_ID = ?', [idCard]);
+      return rows;
+    } catch (error) {
+      console.error('Error al buscar el comentario en la base de datos:', error);
+      throw error;
+    }
+  }
+
+
 }
-export const DefaultR = async (req, res) =>{
-  try{
-    const response = await fetch(`${HOST}:${PORT}/inventario/getEcommerceCard`);
-    const datos = await response.json();
-    res.render("vitrina_productos/index", {datos});
-  }catch (error) {
-    console.error(error);
-    res.status(500).send("Server Error");
-  }
-} 
+

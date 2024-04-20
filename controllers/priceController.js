@@ -1,4 +1,4 @@
-import { Prices } from '../models/priceModels.js' // -> MARIADB
+import { Prices, Comment } from '../models/priceModels.js' // -> MARIADB
 import jwt from 'jsonwebtoken';
 
 export class PriceController {
@@ -40,15 +40,23 @@ export class userInfoController {
 export class comentarios{
 
   static async guardarComentarios(req,res){
-    const {idUsuario, idCard, comment } = req.body
-    const result = await Comment.ADD_COMMENT(idUsuario, idCard, comment)
-    res.Json('se agregó correctamente')
+    try{
+      const {idUsuario, idCard, comment } = req.body
+      const result = await Comment.ADD_COMMENT(idUsuario, idCard, comment)
+      res.status(200).json('se agregó correctamente')
+    }catch (error){
+      console.error('Error al guardar el comentario:', error);
+    }
   }
 
-  //hacer la funcion de regreso de comentario por id
-
-  static async ComentarioPorId(idCard){
-    const result = await Comment.COMMENT_BY_ID(idCard)
-    return result
+  static async ComentarioPorId(req,res){
+    try{
+      const { idCard } = req.body
+      const comentarios = await Comment.VIEW_COMMENT(idCard)
+      res.status(200).json({ comentarios });
+    } catch (error) {
+      console.error('Error al buscar los comentario:', error);
+    }
   }
+
 }
